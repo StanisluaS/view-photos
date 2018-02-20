@@ -107,17 +107,20 @@ body {
 }
 
 .gallery-overlay-close,
-.gallery-overlay-pages span {
+.gallery-overlay-pages span,
+.slider-inner span {
   opacity: 0.5;
 }
 
 .gallery-overlay-preview {
   position: relative;
+  min-height: 300px;
   margin: 0;
   margin-top: 30px;
   background: #333;
   line-height: 0;
   text-align: justify;
+  overflow: hidden;
 }
 
 .gallery-overlay-image[src=""] {
@@ -151,7 +154,7 @@ body {
   display: block;
   margin: 0 auto;
   padding: 0;
-   width: auto;
+  width: auto;
 }
 
 .gallery-overlay-preview img {
@@ -174,30 +177,35 @@ body {
   background-image: url(../image/sprite.png);
   background-repeat: no-repeat;
   background-size: 266px;
-  background-color: rgba(92, 75, 75, 0.4);
   border-radius: 2px;
 }
 
 .gallery-overlay-preview span {
+  background-color: rgba(92, 75, 75, 0.4);
   top: 45%;
 }
 
 .slider-inner span {
+  background-color: rgba(49, 48, 48, 0.4);
   margin-top: 31.5px;
   cursor: pointer;
+
 }
 
 .pages-prev-span {
 background-position: -6px -88px;
 left: 0;
+z-index: 1000;
 }
 
 .pages-next-span {
 background-position: -237px -88px;
 right: 0;
+z-index: 1000;
 }
 
 .gallery-overlay-preview span:hover,
+.slider-inner span:hover,
 .gallery-overlay-close:hover {
   opacity: 1;
 }
@@ -214,12 +222,6 @@ right: 0;
 
 .slider-slides {
 margin: 0 27px;
-}
-
-.slider-slides::after {
-    content: "";
-    display: table;
-    clear: both;
 }
 
 .slider {
