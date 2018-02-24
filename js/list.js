@@ -2,71 +2,81 @@
 
 (function () {
 
-  var galleryOverlayPreview = document.querySelector('.gallery-overlay-preview');
-  var galleryOverlayUl = galleryOverlayPreview.querySelector('ul');
-  var children = galleryOverlayUl.children;
-  var number = 1;
-  var LENGTH = 600;
-  var SPEED_DISPLACEMENT = 1.5;
-
+  var children = window.galleryOverlayUl.children;
+  var container = document.querySelector('.container');
+  var maxWidth = +getComputedStyle(container).maxWidth.replace('px', '');
+  var SPEED_DISPLACEMENT = 1;
 
   window.list = {
     listPages: function (evt) {
       window.debounce.debounce(function () {
         listPages(evt);
       });
-    },
-
-    removeNumber: function () {
-      number = 1;
     }
   };
 
   function listPages(evt) {
-        // debugger;
-    var presentElement;
+    var sliderInnerWidth = +getComputedStyle(window.sliderInner).width.replace('px', '');
+    var sliderWidth = +getComputedStyle(window.sliderSlides).width.replace('px', '');
+    var maxLeft = sliderInnerWidth - sliderWidth - 39;
+    for (var i = 0; i < children.length; i++) {
+      var styleElement = getComputedStyle(window.galleryOverlayUl.children[i]).display;
+      if (styleElement === 'block') {
+        var number = +(window.galleryOverlayUl.children[i].className.replace('elt_', ''));
+      } else if (!(styleElement === 'none')) {
+        return;
+      }
+    }
     var target = evt.target;
     if (target.getAttribute('data-title') === 'prev') {
-      removeElement(presentElement, target);
+      removeElement(number, target);
       number--;
       if (number === 0) {
         number = children.length;
       }
-      addElement(presentElement, target);
+      addElement(number, target, maxLeft);
     }
     if (target.getAttribute('data-title') === 'next') {
       if (number === children.length) {
-        removeElement(presentElement, target);
+        removeElement(number, target);
         number = 1;
-        addElement(presentElement, target);
+        addElement(number, target, maxLeft);
       } else {
-        removeElement(presentElement, target);
+        removeElement(number, target);
         number++;
         if (number === children.length) {
           number = 1;
         }
-        addElement(presentElement, target);
+        addElement(number, target, maxLeft);
       }
     } else {
       return;
     }
   }
 
-  function removeElement(element, target) {
-    // debugger;
-    element = document.querySelector('.elt_' + number);
+  function removeElement(number, target) {
+    var start = Date.now();
+    var element = window.galleryOverlayUl.querySelector('.elt_' + number);
     element.style = 'display: block;';
     setHeight(element);
-    element.style = 'position:absolute; left: 0;';
-    listElement(element, LENGTH, target);
+    element.style = 'display: block; position:absolute; left: 0;';
+    if (target.getAttribute('data-title') === 'next') {
+      listLeft(element, start, number, '-');
+    } else {
+      listLeft(element, start, number, '');
+    }
   }
 
-  function addElement(element, target) {
-    element = document.querySelector('.elt_' + number);
+  function addElement(number, target, maxLeft) {
+    var start = Date.now();
+    var element = window.galleryOverlayUl.querySelector('.elt_' + number);
     element.style = 'display: block;';
-    setHeight(element);
-    element.style = 'position:absolute; left: -600px';
-    listElementXXX(element, target);
+    element.style = 'display: block; position:absolute; left: -600px';
+    if (target.getAttribute('data-title') === 'next') {
+      listRight(element, start, number, maxLeft, '');
+    } else {
+      listRight(element, start, number, maxLeft, '-');
+    }
   }
 
   function setHeight(element) {
@@ -74,65 +84,44 @@
     var imgHeight;
     childrenImg = element.querySelector('img');
     imgHeight = getComputedStyle(childrenImg).height;
-    galleryOverlayPreview.style.height = imgHeight;
+    window.galleryPreview.style.height = imgHeight;
   }
 
-  function listElement(element, length, target) {
-    var start = Date.now();
-    var timer;
-    if (target.getAttribute('data-title') === 'next') {
-      timer = setInterval(function () {
-        var timePassed = Date.now() - start;
-        if (draw(timePassed) >= length) {
-          clearInterval(timer);
-          element.style.cssText = 'display: none; opacity: 0; z-index: 1;';
-          return;
-        }
-        draw(timePassed);
-        element.style.left = '-' + draw(timePassed) + 'px';
-      }, 20);
-    } else {
-      // debugger;
-      timer = setInterval(function () {
-        var timePassed = Date.now() - start;
-        if (draw(timePassed) >= length) {
-          clearInterval(timer);
-          element.style.cssText = 'display: none; opacity: 0; z-index: 1;';
-          return;
-        }
-        draw(timePassed);
-        element.style.left = draw(timePassed) + 'px';
-      }, 20);
-    }
+  function listRight(element, start, number, maxLeft, sign) {
+    var timer = setInterval(function () {
+      var timePassed = Date.now() - start;
+      if (draw(timePassed) >= maxWidth) {
+        clearInterval(timer);
+        element.style.cssText = 'display: block; opacity: 1; z-index: 2;';
+        window.galleryPreview.style.height = '';
+        setClassSlader(number);
+        window.listSlider.moveSlider(number, maxLeft);
+        return;
+      }
+      draw(timePassed);
+      element.style.left = sign + (maxWidth - draw(timePassed)) + 'px';
+    }, 20);
   }
 
-  function listElementXXX(element, target) {
-    var start = Date.now();
-    var timer;
-    if (target.getAttribute('data-title') === 'next') {
-      timer = setInterval(function () {
-        var timePassed = Date.now() - start;
-        if (draw(timePassed) >= 600) {
-          clearInterval(timer);
-          element.style.cssText = 'display: block; opacity: 1; z-index: 2;';
-          return;
-        }
-        draw(timePassed);
-        element.style.left = (600 - draw(timePassed)) + 'px';
-      }, 20);
-    } else {
-            // debugger;
-      timer = setInterval(function () {
-        var timePassed = Date.now() - start;
-        if (draw(timePassed) >= 600) {
-          clearInterval(timer);
-          element.style.cssText = 'display: block; opacity: 1; z-index: 2;';
-          return;
-        }
-        draw(timePassed);
-        element.style.left = (-600 + draw(timePassed)) + 'px';
-      }, 20);
-    }
+  function listLeft(element, start, number, sign) {
+    var timer = setInterval(function () {
+      var timePassed = Date.now() - start;
+      if (draw(timePassed) >= maxWidth) {
+        clearInterval(timer);
+        setClassSlader(number);
+        element.style.cssText = 'display: none; opacity: 0; z-index: 1;';
+        window.galleryPreview.style.height = '';
+        return;
+      }
+      draw(timePassed);
+      element.style.left = sign + draw(timePassed) + 'px';
+    }, 20);
+  }
+
+  function setClassSlader(number) {
+    var element = window.sliderSlides.querySelector('.elt_' + number);
+    element.classList.toggle('active');
+    element.firstElementChild.classList.toggle('active-img');
   }
 
   function draw(timePassed) {

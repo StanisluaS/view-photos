@@ -40,6 +40,7 @@
   function getFotosSlider(url, index) {
     var sliderElement = similarSliderTemplate.cloneNode(true);
     sliderElement.querySelector('img').setAttribute('src', url);
+    sliderElement.querySelector('a').classList.add('elt_' + index);
     if (index === 1) {
       sliderElement.querySelector('img').classList.add('active-img');
       sliderElement.querySelector('a').classList.add('active');
