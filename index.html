@@ -8,6 +8,8 @@
 <html>
   <body>
 
+<div class="error-message hidden"></div>
+
 <div class="main">
   <div class="preview">
   </div>
@@ -35,7 +37,7 @@
 
   <template id="picture-template" style="display: none">
     <a href="#" class="preview-img">
-      <img src="" alt="" data-index-number="">
+      <img src="" alt="" data-name-folder="">
     </a>
   </template>
 
@@ -51,8 +53,9 @@
     </a>
   </template>
 
-  <script src="./js/util.js"></script>  
+  <script src="./js/util.js"></script>
   <script src="./js/debounce.js"></script>
+  <script src="./js/backend.js"></script>
   <script src="./js/size.js"></script>
   <script src="./js/data.js"></script>
   <script src="./js/pictures.js"></script>

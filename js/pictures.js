@@ -5,20 +5,28 @@
 
   var similarFotoTemplate = document.querySelector('#picture-template').content;
   var preview = document.querySelector('.preview');
+  var errorMessage = document.querySelector('.error-message');
 
-  printPhoto(window.data.array, similarFotoTemplate);
+  window.pictures = {
+    errorHandler: function (message) {
+      errorMessage.textContent = message;
+      errorMessage.classList.remove('hidden');
+    }
+  };
 
-  function getPhotos(picturesData, element) {
-    var fotoElement = element.cloneNode(true);
-    fotoElement.querySelector('img').setAttribute('src', picturesData.url);
-    fotoElement.querySelector('img').setAttribute('data-index-number', picturesData.indexNumber);
+  window.backend.load(printPhoto, window.pictures.errorHandler);
+
+  function getPhotos(picturesData) {
+    var fotoElement = similarFotoTemplate.cloneNode(true);
+    fotoElement.querySelector('img').setAttribute('src', picturesData.image);
+    fotoElement.querySelector('img').setAttribute('data-name-folder', picturesData.nameFolder);
     return fotoElement;
   }
 
-  function printPhoto(picturesData, element) {
+  function printPhoto(picturesData) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < picturesData.length; i++) {
-      fragment.appendChild(getPhotos(picturesData[i], element));
+      fragment.appendChild(getPhotos(picturesData[i]));
     }
     preview.appendChild(fragment);
   }
