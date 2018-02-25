@@ -12,9 +12,9 @@
   function openGalleryOverlay(evt) {
     var target = evt.target;
     if (target.tagName === 'IMG') {
-      var index = target.getAttribute('data-index-number');
+      var nameFolder = target.getAttribute('data-name-folder');
       window.galleryOverlay.classList.remove('hidden');
-      window.preview.printFotoInGallery(window.ARRAY, index, window.galleryOverlayUl, window.sliderSlides);
+      window.preview.printFotoInGallery(nameFolder);
       main.removeEventListener('click', openGalleryOverlay);
       galleryOverlayClose.addEventListener('click', openMain);
       window.galleryPreview.addEventListener('click', window.list.listPages);
