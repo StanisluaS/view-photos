@@ -17,8 +17,8 @@
 
   function listPages(evt) {
     var sliderInnerWidth = +getComputedStyle(window.sliderInner).width.replace('px', '');
-    var sliderWidth = +getComputedStyle(window.sliderSlides).width.replace('px', '');
-    var maxLeft = sliderInnerWidth - sliderWidth - 39;
+    var sliderSlidesWidth = +getComputedStyle(window.sliderSlides).width.replace('px', '');
+    var maxLeft = sliderInnerWidth - sliderSlidesWidth - window.util.sliderTotalMargin();
     for (var i = 0; i < children.length; i++) {
       var styleElement = getComputedStyle(window.galleryOverlayUl.children[i]).display;
       if (styleElement === 'block') {
@@ -70,8 +70,7 @@
   function addElement(number, target, maxLeft) {
     var start = Date.now();
     var element = window.galleryOverlayUl.querySelector('.elt_' + number);
-    element.style = 'display: block;';
-    element.style = 'display: block; position:absolute; left: -600px';
+    element.style = 'display: block; position:absolute; left: ' + maxWidth + 'px';
     if (target.getAttribute('data-title') === 'next') {
       listRight(element, start, number, maxLeft, '');
     } else {
