@@ -7,7 +7,6 @@
   var SERVER_URL_FOLDER = '(базовый урл)?folder=';
 
   function setup(onLoad, onError, timeout) {
-      debugger;
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.timeout = timeout || 10000;
