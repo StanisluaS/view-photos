@@ -5,7 +5,7 @@
   var children = window.galleryOverlayUl.children;
   var container = document.querySelector('.container');
   var maxWidth = +getComputedStyle(container).maxWidth.replace('px', '');
-  var SPEED_DISPLACEMENT = 1;
+  var SPEED_DISPLACEMENT = 0.5;
 
   window.list = {
     listPages: function (evt) {
