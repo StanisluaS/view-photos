@@ -27,7 +27,7 @@
       } else {
         return;
       }
-      window.sliderSlides.style.left = -104 * (index - 1) + 'px';
+      window.sliderSlides.style.left = -window.util.sliderTotalWidth() * (index - 1) + 'px';
       if (+window.sliderSlides.style.left.replace('px', '') < left) {
         window.sliderSlides.style.left = left + 'px';
       }
@@ -36,9 +36,9 @@
 
   function listSlider(evt) {
     var sliderInnerWidth = +getComputedStyle(window.sliderInner).width.replace('px', '');
-    var sliderWidth = +getComputedStyle(window.sliderSlides).width.replace('px', '');
+    var sliderSlidesWidth = +getComputedStyle(window.sliderSlides).width.replace('px', '');
     var sliderLeft = +getComputedStyle(window.sliderSlides).left.replace('px', '');
-    var maxLeft = sliderInnerWidth - sliderWidth - 39;
+    var maxLeft = sliderInnerWidth - sliderSlidesWidth - window.util.sliderTotalMargin();
     var start = Date.now();
     var target = evt.target;
     var timer;
@@ -59,9 +59,9 @@
         } else {
           timer = setInterval(function () {
             var timePassed = Date.now() - start;
-            if (draw(timePassed) > 104) {
+            if (draw(timePassed) > window.util.sliderTotalWidth()) {
               clearInterval(timer);
-              window.sliderSlides.style.left = sliderLeft - 104 + 'px';
+              window.sliderSlides.style.left = sliderLeft - window.util.sliderTotalWidth() + 'px';
               if (+window.sliderSlides.style.left.replace('px', '') < maxLeft) {
                 window.sliderSlides.style.left = maxLeft + 'px';
               }
@@ -88,9 +88,9 @@
         } else {
           timer = setInterval(function () {
             var timePassed = Date.now() - start;
-            if (draw(timePassed) > 104) {
+            if (draw(timePassed) > window.util.sliderTotalWidth()) {
               clearInterval(timer);
-              window.sliderSlides.style.left = sliderLeft + 104 + 'px';
+              window.sliderSlides.style.left = sliderLeft + window.util.sliderTotalWidth() + 'px';
               if (+window.sliderSlides.style.left.replace('px', '') > 0) {
                 window.sliderSlides.style.left = 0;
               }

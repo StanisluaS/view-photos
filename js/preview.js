@@ -22,12 +22,11 @@
   };
 
   function printGallery(array, index, src, element) {
-          // debugger;
     var fragment = document.createDocumentFragment();
     for (var i = 1; i <= array[index].number; i++) {
       var url = src + i + '.jpg';
       if (element.className === 'slider-slides') {
-        var px = 104 * i + 'px';
+        var px = window.util.sliderTotalWidth() * i + 'px';
         element.style.cssText = 'width: ' + px;
         element.appendChild(getFotosSlider(url, i));
       } else {
